@@ -8,16 +8,20 @@ from time import sleep
 from flask import Flask, render_template, request
 from Mode import *
 
+last_pattern = 99 # Used to prevent the same pattern being selected twice
+
 app = Flask(__name__)
 
-NUM_RED = 11
-NUM_ORANGE = 9
+# Define the number of LEDs in each colour segment
+NUM_RED = 10
+NUM_ORANGE = 10
 NUM_YELLOW = 8
 NUM_GREEN = 7
 NUM_BLUE = 6
 NUM_INDIGO = 5
 NUM_VIOLET = 4
 
+# Work out start and end LEDs
 RED_START = 0
 RED_END = RED_START + NUM_RED - 1
 ORANGE_START = RED_END + 1
@@ -33,6 +37,7 @@ INDIGO_END = INDIGO_START + NUM_INDIGO -1
 VIOLET_START = INDIGO_END +1
 VIOLET_END = VIOLET_START + NUM_VIOLET 
 
+# Number of pixels in the string
 num_pixels = 50
 pixels = neopixel.NeoPixel(board.D18, num_pixels, brightness=0.6, auto_write=False)
 
@@ -434,12 +439,19 @@ def random_segment():
     loops = 10
     delay_on = 1.5
     delay_off = 0.5
+    last_segment = 99
 
     clearStrip()
 
+    segment = last_segment
+    
     for x in range(loops):
-        segment = random.randint(0,6)
 
+        while(segment == last_segment):
+            segment = random.randint(0,6)
+
+        last_segment = segment
+        
         if segment == 0:
             red_on(0)
         elif segment == 1:
@@ -468,10 +480,21 @@ def random_segment():
 #
 def rainbow():
 
-    pattern = random.randint(0,9)
+    global last_pattern
+    
+    pattern = last_pattern
+
+    # Select a new pattern. ensure its not the
+    # same as the last one we executed
+    while (pattern == last_pattern):
+        pattern = random.randint(0,9)
+
+    last_pattern = pattern
     
     clearStrip()
 
+    print(pattern)
+    
     if pattern == 0:
         random_segment()
     elif pattern == 1:

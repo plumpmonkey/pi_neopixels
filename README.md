@@ -25,6 +25,8 @@ Run the program using the following command: (The ws2811 library needs root acce
    $ sudo python3 rainbow.py
 ```
 
+As this python program needs to be running, I suggest using something like `screen` or `byobu` to have a detachable terminal session so that you can close out out SSH session and leave the program running.
+
 Navigate to the web interface at `<ip address>`. The flask server runs on port 80, so if you have another webserver running on this Pi, you will need to change the Flask config to use a different port.
 
 There are 4 modes 

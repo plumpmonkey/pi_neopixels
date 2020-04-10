@@ -129,6 +129,12 @@ def activity_loop():
 #                     code prevents a perceptable delay which is introduced
 #                     by calling pixels.show() for each light
 #
+def all_white():
+    
+    pixels.fill((255,255,255))
+    pixels.show()
+    
+    
 def red_on(inter_light_delay):
 
     for i in range(RED_START,ORANGE_START):
@@ -342,7 +348,16 @@ def slow_flash():
 # loops     - number of flashes
 # 
 def quick_flash():
-    flash_all(on_delay=0.05, off_delay=0.05, loops=40)
+    flash_all(on_delay=0.02, off_delay=0.02, loops=40)
+    clearStrip()
+
+def quick_flash_white(loops=40, off_delay=0.02, on_delay=0.02):
+    for i in range(0,loops):
+        clearStrip()
+        sleep(off_delay)
+        all_white()
+        sleep(on_delay)
+
     clearStrip()
 
 
@@ -437,8 +452,8 @@ def reverse_individual_sections():
 def random_segment():
 
     loops = 10
-    delay_on = 1.5
-    delay_off = 0.5
+    delay_on = 1.0
+    delay_off = 0.2
     last_segment = 99
 
     clearStrip()
@@ -487,7 +502,7 @@ def rainbow():
     # Select a new pattern. ensure its not the
     # same as the last one we executed
     while (pattern == last_pattern):
-        pattern = random.randint(0,9)
+        pattern = random.randint(0,8)
 
     last_pattern = pattern
     
@@ -499,6 +514,7 @@ def rainbow():
         individual_sections()
     elif pattern == 2:
         reverse_individual_sections()
+        quick_flash_white()
     elif pattern == 3:
         middle_out()
     elif pattern == 4:
@@ -511,9 +527,6 @@ def rainbow():
         outside_in()
     elif pattern == 8:
         quick_flash()
-    elif pattern == 9:
-        for x in range(3):
-            cycle_led(0.005)
     else:
         print("Invalid pattern! {}".format(pattern))
 

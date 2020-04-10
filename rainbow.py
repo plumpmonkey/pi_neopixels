@@ -462,34 +462,39 @@ def random_segment():
         sleep(delay_off)
 
 #
-# Main routine.
+# Main rainbow routine.
 #
 # Select one of the routines by random to execute
 #
 def rainbow():
 
+    pattern = random.randint(0,9)
     
     clearStrip()
 
-    random_segment()
-    
-    individual_sections()
-
-    reverse_individual_sections()
-
-    middle_out()
-
-    slow_on()
-
-    slow_flash()
-
-    sections_on()
-
-    slow_flash()
-
-    outside_in()
-    
-    quick_flash()
+    if pattern == 0:
+        random_segment()
+    elif pattern == 1:
+        individual_sections()
+    elif pattern == 2:
+        reverse_individual_sections()
+    elif pattern == 3:
+        middle_out()
+    elif pattern == 4:
+        slow_on()
+    elif pattern == 5:
+        sections_on()
+    elif pattern == 6:
+        slow_flash()
+    elif pattern == 7:
+        outside_in()
+    elif pattern == 8:
+        quick_flash()
+    elif pattern == 9:
+        for x in range(3):
+            cycle_led(0.005)
+    else:
+        print("Invalid pattern! {}".format(pattern))
 
 
 #
@@ -561,7 +566,6 @@ def cycle_led(wait):
     global mode
     global pixels
 
-    print("Cycle LED")
     for j in range(255):
         for i in range(num_pixels):
             pixel_index = (i * 256 // num_pixels) + j

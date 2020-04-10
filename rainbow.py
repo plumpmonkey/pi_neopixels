@@ -350,7 +350,81 @@ def sections_on():
     sleep(2)
     clearStrip()
 
-    
+
+#
+# Rotate through all sections, only one section is lit
+# at any time. Start with Red
+# 
+def individual_sections():
+
+    delay = 0.75
+
+    red_on(0)
+    sleep(delay)
+    clearStrip()
+
+    orange_on(0)
+    sleep(delay)
+    clearStrip()
+
+    yellow_on(0)
+    sleep(delay)
+    clearStrip()
+
+    green_on(0)
+    sleep(delay)
+    clearStrip()
+
+    blue_on(0)
+    sleep(delay)
+    clearStrip()
+
+    indigo_on(0)
+    sleep(delay)
+    clearStrip()
+
+    violet_on(0)
+    sleep(delay)
+    clearStrip()
+
+
+#
+# Rotate through all sections, only one section is lit
+# at any time. Start with violet
+# 
+def reverse_individual_sections():
+
+    delay = 0.75
+
+    violet_on(0)
+    sleep(delay)
+    clearStrip()
+
+    indigo_on(0)
+    sleep(delay)
+    clearStrip()
+
+    blue_on(0)
+    sleep(delay)
+    clearStrip()
+
+    green_on(0)
+    sleep(delay)
+    clearStrip()
+
+    yellow_on(0)
+    sleep(delay)
+    clearStrip()
+
+    orange_on(0)
+    sleep(delay)
+    clearStrip()
+
+    red_on(0)
+    sleep(delay)
+    clearStrip()
+
+
 #
 # Main routine.
 #
@@ -360,6 +434,10 @@ def rainbow():
 
     
     clearStrip()
+
+    individual_sections()
+
+    reverse_individual_sections()
 
     middle_out()
 

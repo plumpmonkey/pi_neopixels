@@ -1,4 +1,4 @@
-# pi_neopixels
+# Pi Rainbow
 A Raspberry Pi Powered NHS Rainbow using WS2811 a neopixels string.
 
 Inspired by a similar project, I decided to implement my own tribute to the NHS and Keyworkers during the COVID-19 lockdown. A Flask-based web interface gives basic control over the lights. 10 different light patterns have been impletemented and a pattern is randomly selected and played.
@@ -13,7 +13,7 @@ The code is setup for a default 50 LED string, but is easily changed by changing
 
 # Wiring
 
-I suggest watching the following youtube video on how to connect the lights to power supply and Pi [How to wire up WS2811 RGB LEDs to the Raspberry Pi](https://www.youtube.com/watch?v=KJupt2LIjp4&feature=youtu.be)
+I suggest watching the following youtube video on how to connect the lights to power supply and Pi - [How to wire up WS2811 RGB LEDs to the Raspberry Pi](https://www.youtube.com/watch?v=KJupt2LIjp4&feature=youtu.be)
 
 GPIO Pin 18 is used for the data signal. If you wish to modify this, change this at the top of `rainbow.py`
 

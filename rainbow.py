@@ -426,6 +426,42 @@ def reverse_individual_sections():
 
 
 #
+# Random Segment. Pick a random segment, enable it,
+# disable it, repeat for X number of segments
+# 
+def random_segment():
+
+    loops = 10
+    delay_on = 1.5
+    delay_off = 0.5
+
+    clearStrip()
+
+    for x in range(loops):
+        segment = random.randint(0,6)
+
+        if segment == 0:
+            red_on(0)
+        elif segment == 1:
+            orange_on(0)
+        elif segment == 2:
+            yellow_on(0)
+        elif segment == 3:
+            green_on(0)
+        elif segment == 4:
+            blue_on(0)
+        elif segment == 5:
+            indigo_on(0)
+        elif segment == 6:
+            violet_on(0)
+        else:
+            print("Invalid random_segment! {} ".format(segment))
+
+        sleep(delay_on)
+        clearStrip()
+        sleep(delay_off)
+
+#
 # Main routine.
 #
 # Select one of the routines by random to execute
@@ -435,6 +471,8 @@ def rainbow():
     
     clearStrip()
 
+    random_segment()
+    
     individual_sections()
 
     reverse_individual_sections()

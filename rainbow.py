@@ -493,8 +493,6 @@ def rainbow():
     
     clearStrip()
 
-    print(pattern)
-    
     if pattern == 0:
         random_segment()
     elif pattern == 1:

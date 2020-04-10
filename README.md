@@ -11,6 +11,12 @@ The code is setup for a default 50 LED string, but is easily changed by changing
 * [Power Supply](https://www.amazon.co.uk/gp/product/B07DQKM9P7)
 * [WS2811 LED string lights](https://www.amazon.co.uk/gp/product/B01AU6UG70)
 
+# Wiring
+
+I suggest watching the following youtube video on how to connect the lights to power supply and Pi [How to wire up WS2811 RGB LEDs to the Raspberry Pi](https://www.youtube.com/watch?v=KJupt2LIjp4&feature=youtu.be)
+
+GPIO Pin 18 is used for the data signal. If you wish to modify this, change this at the top of `rainbow.py`
+
 # Prerequisites
 Download the project code using `git clone`
 

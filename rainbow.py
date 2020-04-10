@@ -259,9 +259,80 @@ def sections_on():
     all_on(0, 0.7)
     sleep(2)
     clearStrip()
+
+def individual_sections():
+
+    delay = 0.75
+
+    red_on(0)
+    sleep(delay)
+    clearStrip()
+
+    orange_on(0)
+    sleep(delay)
+    clearStrip()
+
+    yellow_on(0)
+    sleep(delay)
+    clearStrip()
+
+    green_on(0)
+    sleep(delay)
+    clearStrip()
+
+    blue_on(0)
+    sleep(delay)
+    clearStrip()
+
+    indigo_on(0)
+    sleep(delay)
+    clearStrip()
+
+    violet_on(0)
+    sleep(delay)
+    clearStrip()
+
+def reverse_individual_sections():
+
+    delay = 0.75
+
+    violet_on(0)
+    sleep(delay)
+    clearStrip()
+
+    indigo_on(0)
+    sleep(delay)
+    clearStrip()
+
+    blue_on(0)
+    sleep(delay)
+    clearStrip()
+
+    green_on(0)
+    sleep(delay)
+    clearStrip()
+
+    yellow_on(0)
+    sleep(delay)
+    clearStrip()
+
+    orange_on(0)
+    sleep(delay)
+    clearStrip()
+
+    red_on(0)
+    sleep(delay)
+    clearStrip()
+
+
+
 def rainbow(inter_colour_delay, inter_light_delay):
 
     clearStrip()
+
+    individual_sections()
+
+    reverse_individual_sections()
 
     middle_out()
 
@@ -365,5 +436,5 @@ def stop_led():
 
 
 if __name__ == '__main__':
-    app.run(debug=True, port='80', host='0.0.0.0')
+    app.run(debug=True, port=80, host='0.0.0.0')
 

@@ -40,4 +40,5 @@ There are 4 modes
   * Cycle Lights - A basic colour cycling mode
   * Knight Rider - Well... you just have to, dont you.
   * Lights Off
-  
+ 
+![IMG_20200410_183300](https://user-images.githubusercontent.com/6984867/79011094-32a2ec80-7b5b-11ea-9383-a6c46272a75e.jpg)

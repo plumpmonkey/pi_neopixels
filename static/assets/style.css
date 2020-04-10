@@ -1,0 +1,51 @@
+th.online, th.delete, th.device-alert, th.nodeinfo, th.monitored, th.toggle {
+	text-align: center;
+    vertical-align: center;
+}
+
+td.online, td.delete, td.device-alert, td.nodeinfo, td.toggle, td.monitored {
+	text-align: center;
+    vertical-align: center;
+}
+
+.message{
+    font-family: "Courier New", "Courier 10 Pitch", serif;
+    font-size: small;
+
+}
+
+.table-condensed{
+  font-size: 10px;
+}
+
+span#header {
+    color: #0b2e13;
+}
+
+div#loading {
+    width: 35px;
+    height: 35px;
+    display: none;
+    background: url(/static/images/ajax-loader.gif) no-repeat;
+    cursor: wait;
+    }
+
+
+.divider{
+    width:350px;
+    height:auto;
+    display:inline-block;
+}
+
+ul.message{
+  overflow: scroll;
+  margin: 0;
+  padding: 0;
+    height: 65vh;
+
+  font-family: "Courier New", "Courier 10 Pitch", serif;
+  font-size: small;
+
+  // Again, this is where the magic happens
+  -webkit-overflow-scrolling: touch;
+}

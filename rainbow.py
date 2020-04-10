@@ -1,7 +1,8 @@
 import board
-import time
 import neopixel
+import random
 import threading
+import time
 
 from time import sleep
 from flask import Flask, render_template, request
@@ -40,6 +41,11 @@ mode = Mode.UNKNOWN
 
 pixels.show()
 
+#################################################################################
+#
+# Flask functions
+#
+#################################################################################
 @app.route('/', methods = ['POST', 'GET'])
 def home_page():
 
@@ -75,23 +81,49 @@ def initialize():
     activity_thread = threading.Thread(target=activity_loop, daemon=True)
     activity_thread.start()
 
+#################################################################################
+#
+# LED functions
+#
+#################################################################################
 
+# Main thread. Checks for mode change every two seconds
 def activity_loop():
     global mode
 
     while(True):
         if mode == Mode.CYCLE:
+            # Cycles the led colurs through the rainbow and string
             cycle_led(0.01)
+
         elif mode == Mode.OFF:
+            # Switch lights off
             clearStrip()
+
         elif mode == Mode.RIDER:
+            # Knight Rider init!
             rider()
+
         elif mode == Mode.RAINBOW:
-            rainbow(0.1, 1)
+            # NHS Rainbow mode
+            rainbow()
+            
         elif mode == Mode.PAUSE:
+            # After lights have been switched off, sleep for 2 seconds
+            # before checking for a new mode. Prevents hammering the
+            # code.
             sleep(2)
 
 
+#
+# Utility functions to switch the individual colour light sections
+# on.
+#
+# inter_light_delay - delay between switching on each light of the
+#                     same colour. If no delay, then slightly kooky
+#                     code prevents a perceptable delay which is introduced
+#                     by calling pixels.show() for each light
+#
 def red_on(inter_light_delay):
 
     for i in range(RED_START,ORANGE_START):
@@ -103,6 +135,7 @@ def red_on(inter_light_delay):
     if(inter_light_delay == 0):
         pixels.show()
 
+        
 def orange_on(inter_light_delay):
 
     for i in range(ORANGE_START, YELLOW_START):
@@ -172,7 +205,13 @@ def violet_on(inter_light_delay):
     if(inter_light_delay == 0):
         pixels.show()
 
-
+        
+#
+# Switch all the colours on.
+#
+# inter_light_delay  - delay between LEDs of same colour
+# inter_colour_delay - delay between different colour segments
+#
 def all_on(inter_light_delay = 0, inter_colour_delay=0):
 
     red_on(inter_light_delay)
@@ -196,14 +235,31 @@ def all_on(inter_light_delay = 0, inter_colour_delay=0):
     violet_on(inter_light_delay)
     sleep(inter_colour_delay)
 
+#
+# Patterns
+#
+
+#
+# Flash all the lights
+#
+# on_delay  - time lights are on
+# off_delay - time lights are off
+# loops     - number of flashes
+#
 def flash_all(on_delay, off_delay, loops):
     
     for i in range(0,loops):
-        all_on(0)
-        sleep(on_delay)
         clearStrip()
         sleep(off_delay)
+        all_on(0)
+        sleep(on_delay)
 
+#
+# Middle Out. Enable via segments. 1) green
+# 2) yellow+blue, 3) orange/indigo, 4) red/violet
+#
+# inter_group_delay - Time delay between enabling segments
+#
 def middle_out(inter_group_delay = 1):
     green_on(0)
     sleep(inter_group_delay)
@@ -222,6 +278,13 @@ def middle_out(inter_group_delay = 1):
 
     clearStrip()
 
+    
+#
+# Outside In. Enable via segments. 1) red/violet
+# 2) orange/indigo, 3) yellow/blue, 4) green
+#
+# inter_group_delay - Time delay between enabling segments
+#
 def outside_in(inter_group_delay = 1):
 
     red_on(0)
@@ -242,25 +305,60 @@ def outside_in(inter_group_delay = 1):
     clearStrip()
 
 
+#
+# Slow On - Enable each light in turn along the string,
+# starting with red.
+#
+# inter_light_delay  - delay between LEDs of same colour
+# inter_colour_delay - delay between different colour segments
+# 
 def slow_on():
     all_on(inter_light_delay = 0.1, inter_colour_delay=0)
     sleep(2)
     clearStrip()
 
+
+#
+# Slow flash - Flash all the LEDs slowly
+#
+# on_delay  - time lights are on
+# off_delay - time lights are off
+# loops     - number of flashes
+# 
 def slow_flash():
     flash_all(on_delay=1.5, off_delay=1, loops=6)
     clearStrip()
 
+#
+# Quick flash - Flash all the LEDs quickly
+#
+# on_delay  - time lights are on
+# off_delay - time lights are off
+# loops     - number of flashes
+# 
 def quick_flash():
     flash_all(on_delay=0.05, off_delay=0.05, loops=40)
     clearStrip()
 
+
+#
+# Sections on - Enable the lights section by section
+# starting with red.
+#
 def sections_on():
     all_on(0, 0.7)
     sleep(2)
     clearStrip()
-def rainbow(inter_colour_delay, inter_light_delay):
 
+    
+#
+# Main routine.
+#
+# Select one of the routines by random to execute
+#
+def rainbow():
+
+    
     clearStrip()
 
     middle_out()
@@ -278,6 +376,9 @@ def rainbow(inter_colour_delay, inter_light_delay):
     quick_flash()
 
 
+#
+# Knight rider mode
+#
 def rider():
     pos = 5
     direction = 1
@@ -313,6 +414,9 @@ def rider():
             direction = -direction
 
 
+#
+# Used for colour cycle
+#
 def wheel(pos):
     # Input a value 0 to 255 to get a color value.
     # The colours are a transition r - g - b - back to r.
@@ -334,7 +438,9 @@ def wheel(pos):
         b = int(255 - pos * 3)
     return (r, g, b) if ORDER in (neopixel.RGB, neopixel.GRB) else (r, g, b, 0)
 
-
+#
+# Cycle the LEDs
+#
 def cycle_led(wait):
     global mode
     global pixels
@@ -348,22 +454,15 @@ def cycle_led(wait):
         pixels.show()
         time.sleep(wait)
 
+        
+#
+# Turn off all lights
+#
 def clearStrip():
     pixels.fill((0, 0, 0))
     pixels.show()
     
 
-def stop_led():
-    
-    global pixels
-    global mode
-
-    print("Stop LED")
-    clearStrip()
-
-    mode = Mode.PAUSE
-
-
 if __name__ == '__main__':
-    app.run(debug=True, port='80', host='0.0.0.0')
+    app.run(debug=True, port=80, host='0.0.0.0')
 

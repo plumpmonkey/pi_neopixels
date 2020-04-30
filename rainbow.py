@@ -1,10 +1,12 @@
 import board
 import neopixel
+import pytz
 import random
 import threading
 import time
 
 from time import sleep
+from datetime import datetime
 from flask import Flask, render_template, request
 from Mode import *
 
@@ -66,6 +68,8 @@ def home_page():
             mode = Mode.RIDER
         elif ("rainbow" in action):
             mode = Mode.RAINBOW
+        elif ("clap" in action):
+            mode = Mode.CLAP
         elif("off" in action):
             mode = Mode.OFF
         else:
@@ -118,6 +122,10 @@ def activity_loop():
             # before checking for a new mode. Prevents hammering the
             # code.
             sleep(2)
+
+        elif mode == Mode.CLAP:
+            # Test mode to test the 8pm clap
+            thursdayClap(delay=0.2, loops=1)
 
 
 #
@@ -489,6 +497,42 @@ def random_segment():
         sleep(delay_off)
 
 #
+# Thursday Clap!
+#
+# For one minute, flash the lights randomly.
+#
+def thursdayClap(delay=0.2, loops = 1):
+
+    for k in range(0,loops):
+        for i in range(0, num_pixels):
+            # Pick a random colour
+            colour = random.randint(0,6)
+            if(colour == 0):
+                pixels[i] = (0,255,0)
+
+            elif(colour == 1):
+                pixels[i] = (165,255,0)
+
+            elif(colour == 2):
+                pixels[i] = (255,255,0)
+
+            elif(colour == 3):
+                pixels[i] = (255,0,0)
+
+            elif(colour == 4):
+                pixels[i] = (0,0,255)
+
+            elif(colour == 5):
+                pixels[i] = (0,75,160)
+
+            elif(colour == 6):
+                pixels[i] = (130,238,238)
+
+            pixels.show()
+            sleep(delay)
+    
+
+#
 # Main rainbow routine.
 #
 # Select one of the routines by random to execute
@@ -496,39 +540,50 @@ def random_segment():
 def rainbow():
 
     global last_pattern
+
+    # Check for Thursday 8pm
+    tz = pytz.timezone('Europe/London')
     
-    pattern = last_pattern
-
-    # Select a new pattern. ensure its not the
-    # same as the last one we executed
-    while (pattern == last_pattern):
-        pattern = random.randint(0,8)
-
-    last_pattern = pattern
-    
-    clearStrip()
-
-    if pattern == 0:
-        random_segment()
-    elif pattern == 1:
-        individual_sections()
-    elif pattern == 2:
-        reverse_individual_sections()
-        quick_flash_white()
-    elif pattern == 3:
-        middle_out()
-    elif pattern == 4:
-        slow_on()
-    elif pattern == 5:
-        sections_on()
-    elif pattern == 6:
-        slow_flash()
-    elif pattern == 7:
-        outside_in()
-    elif pattern == 8:
-        quick_flash()
+    weekday = datetime.today().weekday()
+    time = datetime.now(tz).strftime("%H%M")
+    if weekday == 3 and time == "2000":
+        thursdayClap(0.05)
     else:
-        print("Invalid pattern! {}".format(pattern))
+    
+        pattern = last_pattern
+    
+        # Select a new pattern. ensure its not the
+        # same as the last one we executed
+        while (pattern == last_pattern):
+            pattern = random.randint(0,9)
+
+            last_pattern = pattern
+    
+            clearStrip()
+
+            if pattern == 0:
+                random_segment()
+            elif pattern == 1:
+                individual_sections()
+            elif pattern == 2:
+                reverse_individual_sections()
+                quick_flash_white()
+            elif pattern == 3:
+                middle_out()
+            elif pattern == 4:
+                slow_on()
+            elif pattern == 5:
+                sections_on()
+            elif pattern == 6:
+                slow_flash()
+            elif pattern == 7:
+                outside_in()
+            elif pattern == 8:
+                quick_flash()
+            elif pattern == 9:
+                thursdayClap(delay = 0.2, loops = 40)
+        else:
+            print("Invalid pattern! {}".format(pattern))
 
 
 #
